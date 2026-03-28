@@ -101,3 +101,47 @@ Notes:
 ## Stack
 - Backend: Node.js + Express + Socket.io
 - Frontend: React + Vite + react-router-dom
+
+## Deploy (Vercel + Render)
+
+This project should be deployed as:
+- Frontend (`client/`) on Vercel
+- Backend (`server/`) on Render
+
+### 1) Deploy backend on Render
+
+1. Go to Render dashboard -> `New +` -> `Web Service`
+2. Connect your GitHub repo: `Sukuna21stfinger/focus-room`
+3. Use these settings:
+   - Root Directory: `server`
+   - Build Command: `npm install`
+   - Start Command: `npm start`
+4. Add environment variables:
+   - `PORT` = `10000` (or leave Render default)
+   - `CLIENT_ORIGIN` = your Vercel app URL (set this after frontend deploy)
+5. Deploy and copy backend URL (example: `https://focus-room-api.onrender.com`)
+
+### 2) Deploy frontend on Vercel
+
+1. Go to Vercel dashboard -> `Add New...` -> `Project`
+2. Import repo: `Sukuna21stfinger/focus-room`
+3. Use these settings:
+   - Root Directory: `client`
+   - Build Command: `npm run build`
+   - Output Directory: `dist`
+4. Add environment variable:
+   - `VITE_API_URL` = your Render backend URL
+5. Deploy and copy frontend URL (example: `https://focus-room.vercel.app`)
+
+### 3) Final CORS update on Render
+
+After Vercel URL is ready:
+1. Open Render service -> `Environment`
+2. Set `CLIENT_ORIGIN` to exact Vercel URL
+3. Redeploy Render service
+
+### 4) Verify
+
+1. Open Vercel app URL
+2. Create room and join from another tab/device
+3. Confirm timer sync + live presence + focus count updates work

@@ -8,11 +8,33 @@ const { createFocusRouter, defaultResolveUserId } = require("./routes/focus");
 const { registerFocusSocketHandler } = require("./socket/focusSocketHandler");
 
 const app = express();
-app.use(cors());
+
+const CLIENT_ORIGIN_ENV = String(process.env.CLIENT_ORIGIN || "*");
+const ALLOWED_ORIGINS = CLIENT_ORIGIN_ENV.split(",")
+  .map((value) => value.trim())
+  .filter(Boolean);
+
+function isOriginAllowed(origin) {
+  if (!origin) return true; // Allow non-browser requests (curl, health checks).
+  if (ALLOWED_ORIGINS.includes("*")) return true;
+  return ALLOWED_ORIGINS.includes(origin);
+}
+
+const corsOptions = {
+  origin(origin, callback) {
+    if (isOriginAllowed(origin)) {
+      callback(null, true);
+      return;
+    }
+    callback(new Error("Not allowed by CORS"));
+  },
+};
+
+app.use(cors(corsOptions));
 app.use(express.json());
 
 const server = http.createServer(app);
-const io = new Server(server, { cors: { origin: "*" } });
+const io = new Server(server, { cors: corsOptions });
 
 const rooms = {};
 const generateRoomId = customAlphabet("ABCDEFGHJKLMNPQRSTUVWXYZ23456789", 6);
