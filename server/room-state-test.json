@@ -1,0 +1,10 @@
+{
+  "rooms": {
+    "VSNB44": {
+      "id": "VSNB44",
+      "cycleStartTime": 1774242719599,
+      "focusDuration": 900,
+      "breakDuration": 300
+    }
+  }
+}
