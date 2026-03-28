@@ -319,7 +319,8 @@ button:active {
   justify-content: space-between;
   min-height: 100vh;
   gap: 14px;
-  padding: 20px 24px;
+  /* Reserve top space for the fixed sound toggle to avoid overlap with room header chips. */
+  padding: 84px 24px 20px;
   transition: background 1s ease;
 }
 
@@ -1176,6 +1177,10 @@ button:active {
 }
 
 @media (max-width: 480px) {
+  .room {
+    padding-top: 92px;
+  }
+
   .home h1 {
     font-size: 2.2rem;
   }
